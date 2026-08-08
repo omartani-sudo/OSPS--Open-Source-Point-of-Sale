@@ -1,0 +1,40 @@
+version: '2'
+
+volumes:
+    uploads:
+        driver: local
+  
+services:
+    sqlscript:
+        build:
+            context: database/
+            dockerfile: Dockerfile
+    php:
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        links:
+            - mysql
+        ports:
+            - "80:80"
+        volumes:
+            - .:/app
+        environment:
+            - PHP_TIMEZONE=UTC
+            - MYSQL_USERNAME=root
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD:-changeme}
+            - MYSQL_DB_NAME=ospos
+            - MYSQL_HOST_NAME=mysql
+            - XDEBUG_CONFIG=remote_host=172.17.0.1
+
+    mysql:
+        image: mariadb:10.1.21
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-changeme}
+            - MYSQL_DATABASE=ospos
+            - MYSQL_USER=root
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD:-changeme}
+        ports:
+            - "3306:3306"
+        volumes_from:
+            - sqlscript

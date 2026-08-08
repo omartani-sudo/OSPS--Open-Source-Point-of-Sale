@@ -1,0 +1,33 @@
+# OSPOS .gitignore
+
+# User uploaded files
+public/uploads/
+!public/uploads/.htaccess
+
+# Logs
+application/logs/
+!application/logs/.htaccess
+
+# Composer
+vendor/
+composer.lock
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Environment
+.env
+.env.local
+
+# Backup files
+*.bak
+*.backup
+*.sql
+database/backups/
